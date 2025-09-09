@@ -34,11 +34,11 @@ serverClient.post('/message', async (request, response) => {
     // // Se o usuário não existe, insere no banco de dados
     // await database.run('INSERT INTO usuarios (phone, FirstInteraction) VALUES (?, ?)', [sender, Date.now()]);
 
-  let WelcomemMessage = 'Olá! Bem-vindo(a) ao nosso serviço de chatbot. Como posso ajudar?\n\n';
+  let WelcomemMessage = 'Olá! ✨ Bem-vindo(a) ao *Cantinho da Renata*! \n\nFico feliz em te receber por aqui. Para começar, por favor, escolha uma das opções abaixo: \n\n';
   WelcomemMessage += 'Escolha uma das opções abaixo digitando o número correspondente:\n';
-  WelcomemMessage += '1. Falar com atendente\n';
-  WelcomemMessage += '2. Conhecer nossos serviços\n';
-  WelcomemMessage += '3. Horário de funcionamento';
+  WelcomemMessage += '1. 📅AGENDAMENTOs \n';
+  WelcomemMessage += '2. 🛒 SERVIÇOS/PRODUTOS\n';
+  WelcomemMessage += '3. 📦Jequiti/Bijuteria';
 
   twiml.message(WelcomemMessage);
 
