@@ -29,8 +29,8 @@ serverClient.post('/message', async (request, response) => {
   const interactionMessageUser = request.body.Body.toLowerCase().trim();
   
   const database = await getDatabaseConnection();
-  const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
-
+  let [users] = await database.query('SELECT * FROM users WHERE phone = ?', [sender]);
+  let user = users[0];
 
    if (!user) {
             await database.query('INSERT INTO users (phone, state) VALUES (?, ?)', [sender, 'initial']);
