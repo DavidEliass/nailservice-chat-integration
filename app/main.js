@@ -3,10 +3,18 @@ import dotenv from 'dotenv';
 import fastify from "fastify";
 import fastifyFormbody from '@fastify/formbody';
 import { getDatabaseConnection } from './database/config.js';
+dotenv.config();
+
+
+// Default Message
+import { DefaultMessageWelcome } from './commands/defaultInteraction.js';
+// Commands 
+import { CommandServiceAndProducts } from './commands/serviceAndProduct.js';
+import { CommandSchedule } from './commands/schedule.js';
+import { CommandProduct } from './commands/products.js';
 
 const MessagingResponse = twilio.twiml.MessagingResponse;
 
-dotenv.config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
@@ -24,38 +32,41 @@ serverClient.register(fastifyFormbody);
 serverClient.post('/message', async (request, response) => {
   const twiml = new MessagingResponse();
   const sender = request.body.From;
-  const database = await getDatabaseConnection();
+  // const database = await getDatabaseConnection();
   const interactionMessageUser = request.body.Body.toLowerCase().trim();
 
-  const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
+  // const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
 
   console.log('Mensagem recebida de:', sender);
 
-  let WelcomemMessage = 'Olá! ✨ Bem-vindo(a) ao *Cantinho da Renata*! \n\nFico feliz em te receber por aqui. Para começar, por favor, escolha uma das opções abaixo: \n\n';
-  WelcomemMessage += 'Escolha uma das opções abaixo digitando o número correspondente:\n';
-  WelcomemMessage += '1. 📅*AGENDAMENTOS* \n';
-  WelcomemMessage += '2. 🛒 *SERVIÇOS/PRODUTOS*\n';
-  WelcomemMessage += '3. 📦*Jequiti/Bijuteria*';
+   let ResponseMessage = '';
 
-
-  let ResponseMessage = '';
-
- if (interactionMessageUser === '1') {
-  ResponseMessage = 'Para agendar, por favor, envie uma mensagem para este número, com a data e horário preferido. Em breve um de nossos atendentes entrará em contato.';
-} else if (interactionMessageUser === '2') {
-  // ATENÇÃO: Corrigi o erro de digitação de "ttwiml" para "twiml"
-  ResponseMessage = 'Temos uma variedade de serviços e produtos para cuidar de você!💅\n\n- Manicure/Pedicure\n- Alongamento de Cílios\n- Maquiagem profissional\n\nEntre em contato conosco para saber mais!';
-} else if (interactionMessageUser === '3') {
-  ResponseMessage = 'As bijuterias e produtos da Jequiti estão disponíveis em nosso estabelecimento. Venha nos visitar ou peça o nosso catálogo online!';
-} else {
-  // Se a mensagem não for uma das opções, ele envia a mensagem de boas-vindas
-  ResponseMessage = 'Olá! ✨ Bem-vindo(a) ao *Cantinho da Renata*! \n\nFico feliz em te receber por aqui. Para começar, por favor, escolha uma das opções abaixo: \n\n1. 📅AGENDAMENTOs \n2. 🛒 SERVIÇOS/PRODUTOS\n3. 📦Jequiti/Bijuteria';
-}
-
+  // Lógica de "Command Handler"
+  switch (interactionMessageUser) {
+    case '1':
+    case 'agendamento':
+    case 'agendamentos':
+      ResponseMessage = CommandSchedule();
+      break;
+    case '2':
+    case 'serviços':
+    case 'servicos':
+      ResponseMessage = CommandServiceAndProducts();
+      break;
+    case '3':
+    case 'jequiti':
+    case 'bijuteria':
+      ResponseMessage = CommandProduct();
+      break;
+    default:
+      ResponseMessage = DefaultMessageWelcome();
+      break;
+  }
 
   twiml.message(ResponseMessage);
 
-  
+
+
   response
     .code(200)
     .header('Content-Type', 'text/xml')
