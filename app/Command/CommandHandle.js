@@ -6,7 +6,7 @@ import {
 } from './Menu/ImportHandle.js';
 
 
-export async function handleInitialState(database, user, message) {
+export async function CommandHandle(database, user, message) {
     let ResponseMessage = '';
     
     switch (message) {

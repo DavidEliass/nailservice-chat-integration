@@ -4,6 +4,7 @@ import fastify from "fastify";
 import fastifyFormbody from '@fastify/formbody';
 import { getDatabaseConnection } from './database/mysql-connect.js';
 import { ScheduleState } from './Command/States/ScheduleState.js';
+import { CommandHandle } from './Command/CommandHandle.js';
 dotenv.config();
 
 
