@@ -37,18 +37,23 @@ serverClient.post('/message', async (request, response) => {
   WelcomemMessage += '2. 🛒 SERVIÇOS/PRODUTOS\n';
   WelcomemMessage += '3. 📦Jequiti/Bijuteria';
 
- twiml.message(WelcomemMessage);
+
+  let ResponseMessage = '';
 
  if (interactionMessageUser === '1') {
-    twiml.message('Para agendar, por favor, envie uma mensagem para este número, com a data e horário preferido. Em breve um de nossos atendentes entrará em contato.');
-  } else if (interactionMessageUser === '2') {
-    ttwiml.message('Temos uma variedade de serviços e produtos para cuidar de você!💅\n\n- Manicure/Pedicure\n- Alongamento de Cílios\n- Maquiagem profissional\n\nEntre em contato conosco para saber mais!');
-  } else if (interactionMessageUser === '3') {
-    twiml.message('As bijuterias e produtos da Jequiti estão disponíveis em nosso estabelecimento. Venha nos visitar ou peça o nosso catálogo online!');
-  } else {
-    // Se a mensagem não for uma das opções, ele envia a mensagem de boas-vindas novamente
-    twiml.message(WelcomemMessage);
-  }
+  ResponseMessage = 'Para agendar, por favor, envie uma mensagem para este número, com a data e horário preferido. Em breve um de nossos atendentes entrará em contato.';
+} else if (interactionMessageUser === '2') {
+  // ATENÇÃO: Corrigi o erro de digitação de "ttwiml" para "twiml"
+  ResponseMessage = 'Temos uma variedade de serviços e produtos para cuidar de você!💅\n\n- Manicure/Pedicure\n- Alongamento de Cílios\n- Maquiagem profissional\n\nEntre em contato conosco para saber mais!';
+} else if (interactionMessageUser === '3') {
+  ResponseMessage = 'As bijuterias e produtos da Jequiti estão disponíveis em nosso estabelecimento. Venha nos visitar ou peça o nosso catálogo online!';
+} else {
+  // Se a mensagem não for uma das opções, ele envia a mensagem de boas-vindas
+  ResponseMessage = 'Olá! ✨ Bem-vindo(a) ao *Cantinho da Renata*! \n\nFico feliz em te receber por aqui. Para começar, por favor, escolha uma das opções abaixo: \n\n1. 📅AGENDAMENTOs \n2. 🛒 SERVIÇOS/PRODUTOS\n3. 📦Jequiti/Bijuteria';
+}
+
+
+  twiml.message(ResponseMessage);
 
   
   response
