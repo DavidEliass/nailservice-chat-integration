@@ -43,7 +43,7 @@ serverClient.post('/message', async (request, response) => {
   twiml.message(mensagemBoasVindas);
   // }
 
-  twiml.message('Mensagem recebida com sucesso! Em breve, um de nossos atendentes entrará em contato.');
+
 
   response
     .code(200)
