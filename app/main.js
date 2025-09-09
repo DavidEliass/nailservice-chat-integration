@@ -32,7 +32,7 @@ serverClient.post('/message', async (request, response) => {
 
   if (!user) {
     // Se o usuário não existe, insere no banco de dados
-    await database.run('INSERT INTO usuarios (phone, FirstInteraction) VALUES (?, ?)', [sender, Date.now()]);
+    await database.run('INSERT INTO users (phone, FirstInteraction) VALUES (?, ?)', [sender, Date.now()]);
 
   let WelcomemMessage = 'Olá! ✨ Bem-vindo(a) ao *Cantinho da Renata*! \n\nFico feliz em te receber por aqui. Para começar, por favor, escolha uma das opções abaixo: \n\n';
   WelcomemMessage += 'Escolha uma das opções abaixo digitando o número correspondente:\n';
