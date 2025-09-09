@@ -3,15 +3,9 @@ import dotenv from 'dotenv';
 import fastify from "fastify";
 import fastifyFormbody from '@fastify/formbody';
 import { getDatabaseConnection } from './database/mysql-connect.js';
+import { ScheduleState } from './Command/States/ScheduleState.js';
 dotenv.config();
 
-
-// Default Message
-import { DefaultMessageWelcome } from './commands/defaultInteraction.js';
-// Commands 
-import { CommandServiceAndProducts } from './commands/serviceAndProduct.js';
-import { CommandSchedule } from './commands/schedule.js';
-import { CommandProduct } from './commands/products.js';
 
 const MessagingResponse = twilio.twiml.MessagingResponse;
 
@@ -32,36 +26,31 @@ serverClient.register(fastifyFormbody);
 serverClient.post('/message', async (request, response) => {
   const twiml = new MessagingResponse();
   const sender = request.body.From;
-  // const database = await getDatabaseConnection();
   const interactionMessageUser = request.body.Body.toLowerCase().trim();
+  
+  const database = await getDatabaseConnection();
+  const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
 
-  // const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
 
-  console.log('Mensagem recebida de:', sender);
+   if (!user) {
+            await database.query('INSERT INTO users (phone, state) VALUES (?, ?)', [sender, 'initial']);
+            user = { phone: sender, state: 'initial' }; 
+            console.log('Mensagem recebida de:', sender);
+    }
 
+      await database.query('UPDATE users SET date = NOW() WHERE phone = ?', [sender]);
+
+
+      
    let ResponseMessage = '';
 
-  // Lógica de "Command Handler"
-  switch (interactionMessageUser) {
-    case '1':
-    case 'agendamento':
-    case 'agendamentos':
-      ResponseMessage = CommandSchedule();
-      break;
-    case '2':
-    case 'serviços':
-    case 'servicos':
-      ResponseMessage = CommandServiceAndProducts();
-      break;
-    case '3':
-    case 'jequiti':
-    case 'bijuteria':
-      ResponseMessage = CommandProduct();
-      break;
-    default:
-      ResponseMessage = DefaultMessageWelcome();
-      break;
-  }
+
+   if (user.state === 'initial') {
+            ResponseMessage = await CommandHandle(database, user, interactionMessageUser);
+        } else if (user.state === 'agendamento_data') {
+            ResponseMessage = await ScheduleState(database, user, interactionMessageUser);
+    }
+
 
   twiml.message(ResponseMessage);
 
