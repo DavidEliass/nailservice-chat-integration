@@ -26,7 +26,7 @@ serverClient.post('/message', async (request, response) => {
   const sender = request.body.From;
   const database = await getDatabaseConnection();
 
-  // const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
+  const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
 
   console.log('Mensagem recebida de:', sender);
 
