@@ -25,14 +25,11 @@ serverClient.post('/message', async (request, response) => {
   const twiml = new MessagingResponse();
   const sender = request.body.From;
   const database = await getDatabaseConnection();
+  const interactionMessageUser = request.body.Body.toLowerCase().trim();
 
   const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
 
   console.log('Mensagem recebida de:', sender);
-
-  if (!user) {
-    // Se o usuário não existe, insere no banco de dados
-    await database.run('INSERT INTO users (phone, FirstInteraction) VALUES (?, ?)', [sender, Date.now()]);
 
   let WelcomemMessage = 'Olá! ✨ Bem-vindo(a) ao *Cantinho da Renata*! \n\nFico feliz em te receber por aqui. Para começar, por favor, escolha uma das opções abaixo: \n\n';
   WelcomemMessage += 'Escolha uma das opções abaixo digitando o número correspondente:\n';
@@ -41,18 +38,18 @@ serverClient.post('/message', async (request, response) => {
   WelcomemMessage += '3. 📦Jequiti/Bijuteria';
 
  twiml.message(WelcomemMessage);
-} else {
-    // Lógica para usuários que já interagiram
-    if (mensagemRecebida === '1') {
-      twiml.message('Para agendar, por favor, envie uma mensagem para este número, com a data e horário preferido. Em breve um de nossos atendentes entrará em contato.');
-    } else if (mensagemRecebida === '2') {
-      twiml.message('Temos uma variedade de serviços e produtos para cuidar de você!💅\n\n- Manicure/Pedicure\n- Alongamento de Cílios\n- Maquiagem profissional\n\nEntre em contato conosco para saber mais!');
-    } else if (mensagemRecebida === '3') {
-      twiml.message('As bijuterias e produtos da Jequiti estão disponíveis em nosso estabelecimento. Venha nos visitar ou peça o nosso catálogo online!');
-    } else {
-      twiml.message('Desculpe, não entendi. Por favor, digite "1", "2" ou "3" para ver as opções disponíveis.');
-    }
+
+ if (interactionMessageUser === '1') {
+    twiml.message('Para agendar, por favor, envie uma mensagem para este número, com a data e horário preferido. Em breve um de nossos atendentes entrará em contato.');
+  } else if (interactionMessageUser === '2') {
+    ttwiml.message('Temos uma variedade de serviços e produtos para cuidar de você!💅\n\n- Manicure/Pedicure\n- Alongamento de Cílios\n- Maquiagem profissional\n\nEntre em contato conosco para saber mais!');
+  } else if (interactionMessageUser === '3') {
+    twiml.message('As bijuterias e produtos da Jequiti estão disponíveis em nosso estabelecimento. Venha nos visitar ou peça o nosso catálogo online!');
+  } else {
+    // Se a mensagem não for uma das opções, ele envia a mensagem de boas-vindas novamente
+    twiml.message(WelcomemMessage);
   }
+
   
   response
     .code(200)
