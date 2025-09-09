@@ -3,12 +3,10 @@ import dotenv from 'dotenv';
 import fastify from "fastify";
 import fastifyFormbody from '@fastify/formbody';
 
-
 const MessagingResponse = twilio.twiml.MessagingResponse;
 
-
 dotenv.config();
-const accountSid = process.env.TWILIO_ACCOUNT_SID; //TODO: ARRAY
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 if (!accountSid || !authToken) {
@@ -22,23 +20,15 @@ const serverClient = fastify();
 
 serverClient.register(fastifyFormbody);
 
+serverClient.post('/message', (request, response) => {
+  const twiml = new MessagingResponse();
 
-async function bootrap() {
-    serverClient.post('/message', (request, response) => {
-        const twiml = new MessagingResponse();
+  twiml.message('Mensagem recebida com sucesso! Em breve, um de nossos atendentes entrará em contato.');
 
-        twiml.message('Mensagem recebida com sucesso! Em breve, um de nossos atendentes entrará em contato.');
+  response
+    .code(200)
+    .header('Content-Type', 'text/xml')
+    .send(twiml.toString());
+});
 
-         response
-        .code(200)
-        .header('Content-Type', 'text/xml')
-        .send(twiml.toString());
-
-    });
-}
-
-
-bootrap();
-
-
-export { serverClient};
+export { serverClient }
