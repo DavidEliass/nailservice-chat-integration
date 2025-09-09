@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-       "dev": "node app/app.js"
+    "dev": "node app/app.js"
   },
   "keywords": [],
   "author": "",
@@ -12,8 +12,11 @@
   "type": "module",
   "dependencies": {
     "@fastify/formbody": "^8.0.2",
+    "@types/sqlite3": "^3.1.11",
     "dotenv": "^17.2.2",
     "fastify": "^5.6.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "twilio": "^5.9.0"
   },
   "devDependencies": {
