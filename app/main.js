@@ -33,9 +33,9 @@ serverClient.post('/message', async (request, response) => {
 
   let WelcomemMessage = 'Olá! ✨ Bem-vindo(a) ao *Cantinho da Renata*! \n\nFico feliz em te receber por aqui. Para começar, por favor, escolha uma das opções abaixo: \n\n';
   WelcomemMessage += 'Escolha uma das opções abaixo digitando o número correspondente:\n';
-  WelcomemMessage += '1. 📅AGENDAMENTOs \n';
-  WelcomemMessage += '2. 🛒 SERVIÇOS/PRODUTOS\n';
-  WelcomemMessage += '3. 📦Jequiti/Bijuteria';
+  WelcomemMessage += '1. 📅*AGENDAMENTOS* \n';
+  WelcomemMessage += '2. 🛒 *SERVIÇOS/PRODUTOS*\n';
+  WelcomemMessage += '3. 📦*Jequiti/Bijuteria*';
 
 
   let ResponseMessage = '';
