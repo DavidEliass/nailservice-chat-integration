@@ -40,12 +40,12 @@ serverClient.post('/message', async (request, response) => {
     WelcomemMessage += '2. Conhecer nossos serviços\n';
     WelcomemMessage += '3. Horário de funcionamento';
 
-  twiml.message("mensagemBoasVindas")
+  twiml.message(mensagemBoasVindas)
   // }
 
 
 
-  response
+  .response
     .code(200)
     .header('Content-Type', 'text/xml')
     .send(twiml.toString());
