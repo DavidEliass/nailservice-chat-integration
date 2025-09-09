@@ -34,21 +34,21 @@ serverClient.post('/message', async (request, response) => {
     // // Se o usuário não existe, insere no banco de dados
     // await database.run('INSERT INTO usuarios (phone, FirstInteraction) VALUES (?, ?)', [sender, Date.now()]);
 
-    let WelcomemMessage = 'Olá! Bem-vindo(a) ao nosso serviço de chatbot. Como posso ajudar?\n\n';
-    WelcomemMessage += 'Escolha uma das opções abaixo digitando o número correspondente:\n';
-    WelcomemMessage += '1. Falar com atendente\n';
-    WelcomemMessage += '2. Conhecer nossos serviços\n';
-    WelcomemMessage += '3. Horário de funcionamento';
+  let WelcomemMessage = 'Olá! Bem-vindo(a) ao nosso serviço de chatbot. Como posso ajudar?\n\n';
+  WelcomemMessage += 'Escolha uma das opções abaixo digitando o número correspondente:\n';
+  WelcomemMessage += '1. Falar com atendente\n';
+  WelcomemMessage += '2. Conhecer nossos serviços\n';
+  WelcomemMessage += '3. Horário de funcionamento';
 
-  twiml.message(WelcomemMessage)
-  // }
+  twiml.message(WelcomemMessage);
 
-
-
-  .response
+  
+  response
     .code(200)
     .header('Content-Type', 'text/xml')
     .send(twiml.toString());
 });
+  
+
 
 export { serverClient }
