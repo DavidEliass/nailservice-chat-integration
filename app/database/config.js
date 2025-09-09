@@ -5,7 +5,7 @@ const DatabasePathLocal = './sqlLocal/database.sql';
 
 export async function getDatabaseConnection() {
   const database = await open({
-    filename: DatabasePathLocal,
+    filename: ':memory:',
     driver: sqlite3.Database
   });
 
