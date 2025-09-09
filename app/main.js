@@ -2,7 +2,7 @@ import twilio from 'twilio';
 import dotenv from 'dotenv';
 import fastify from "fastify";
 import fastifyFormbody from '@fastify/formbody';
-import { getDatabaseConnection } from './database/config.js';
+import { getDatabaseConnection } from './database/mysql-connect.js';
 dotenv.config();
 
 

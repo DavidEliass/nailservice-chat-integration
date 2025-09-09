@@ -17,5 +17,5 @@
 
   },
   "include": ["src/**/*"], // Adjust to your actual source folder
-  "exclude": ["app/app.ts"] // Exclude the missing file if not needed
+  "exclude": ["app/app.ts"] // Exclude only 'app/app.ts' if not needed
 }
