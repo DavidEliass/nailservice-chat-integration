@@ -26,11 +26,13 @@ serverClient.post('/message', async (request, response) => {
   const sender = request.body.From;
   const database = await getDatabaseConnection();
 
-  const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
+  // const user = await database.get('SELECT * FROM users WHERE phone = ?', [sender]);
 
-  if (!user) {
-    // Se o usuário não existe, insere no banco de dados
-    await database.run('INSERT INTO usuarios (phone, FirstInteraction) VALUES (?, ?)', [sender, Date.now()]);
+  console.log('Mensagem recebida de:', sender);
+
+  // if (!user) {
+    // // Se o usuário não existe, insere no banco de dados
+    // await database.run('INSERT INTO usuarios (phone, FirstInteraction) VALUES (?, ?)', [sender, Date.now()]);
 
     let WelcomemMessage = 'Olá! Bem-vindo(a) ao nosso serviço de chatbot. Como posso ajudar?\n\n';
     WelcomemMessage += 'Escolha uma das opções abaixo digitando o número correspondente:\n';
@@ -38,8 +40,8 @@ serverClient.post('/message', async (request, response) => {
     WelcomemMessage += '2. Conhecer nossos serviços\n';
     WelcomemMessage += '3. Horário de funcionamento';
 
-    twiml.message(mensagemBoasVindas);
-  }
+  twiml.message(mensagemBoasVindas);
+  // }
 
   twiml.message('Mensagem recebida com sucesso! Em breve, um de nossos atendentes entrará em contato.');
 
