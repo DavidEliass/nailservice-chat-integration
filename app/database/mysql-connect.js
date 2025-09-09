@@ -8,13 +8,9 @@ export async function getDatabaseConnection() {
     }
 
     try {
-        const connection = await mysql.createConnection({
-            host: process.env.MYSQL_HOST,
-            user: process.env.MYSQL_USER,
-            password: process.env.MYSQL_PASSWORD,
-            database: process.env.MYSQL_DATABASE,
-            port: process.env.MYSQL_PORT,
-        });
+        // Use a variável de ambiente para a string de conexão
+        const connection = await mysql.createConnection(process.env.MYSQL_PUBLIC_URL);
+        console.log('String de conexão do MySQL:', process.env.MYSQL_PUBLIC_URL);
 
         console.log('Conexão com o banco de dados MySQL estabelecida.');
         database = connection;
